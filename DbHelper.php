@@ -108,16 +108,20 @@ class DbHelper
     }
 	
 	public function showImage() {
-	$imageId = 2;
-    $query = "SELECT image FROM Images WHERE id = ?";
+	$imageId = 3;
+    $query = "SELECT image FROM `Images` WHERE id = ?";
     $stmt = $this->conn->prepare($query);
     $stmt->bind_param('i', $imageId);
     $stmt->execute();
     $stmt->bind_result($imageData);
     $stmt->fetch();
     $stmt->close();
-
+	// Проверка, что данные изображения получены
+    if ($imageData === null) {
+        echo 'Изображение не найдено';
+        return;
+    }
     // Отображение изображения на странице
     echo '<img src="data:image/png;base64,' . base64_encode($imageData) . '">';
-}
+	}
 }
